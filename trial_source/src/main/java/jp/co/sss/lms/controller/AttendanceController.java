@@ -40,7 +40,10 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/detail", method = RequestMethod.GET)
-	public String index(Model model) {
+	public String index(Model model) throws ParseException {
+
+		//現在より過去に未入力が無いかチェック
+		model.addAttribute("notEnterCheckResult", studentAttendanceService.notEnterCheck(loginUserDto.getLmsUserId()));
 
 		// 勤怠一覧の取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService

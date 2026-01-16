@@ -6,6 +6,8 @@
 <title>勤怠情報変更｜LMS</title>
 </head>
 <body>
+	
+	<span id="result" th:text="${notEnterCheckResult}" hidden></span>
 
 	<!-- 完了メッセージ -->
 	<th:block th:if="${not #strings.isEmpty(message)}" id="message">
@@ -85,7 +87,11 @@
 			const hours = ('0' + today.getHours()).slice(-2);
 			const minutes = ('0' + today.getMinutes()).slice(-2);
 			return hours + ':' + minutes;
-		}
+		};
+		 let notEnterCheckResult = document.getElementById("result").textContent;
+    	if (notEnterCheckResult) {
+        	alert("過去日の勤怠に未入力があります。");
+    	}
 	</script>
 
 </body>

@@ -1,6 +1,9 @@
 package jp.co.sss.lms.service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -334,4 +337,21 @@ public class StudentAttendanceService {
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
 	}
 
+	/**
+	 * 勤怠情報（受講生入力）未入力件数取得
+	 * 
+	 * @author 李宏博  – Task.25
+	 * @param lmsUserId
+	 * @param deleteFlg
+	 * @param trainingDate
+	 * @return 件数
+	 */
+	
+	public Boolean notEnterCheck(Integer lmsUserId) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+		LocalDateTime now = LocalDateTime.now(); 
+		Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant()); 
+		String nowDate = sdf.format(date);
+		return (tStudentAttendanceMapper.notEnterCount(lmsUserId, 0, nowDate) > 0) ? true :false;
+	}
 }

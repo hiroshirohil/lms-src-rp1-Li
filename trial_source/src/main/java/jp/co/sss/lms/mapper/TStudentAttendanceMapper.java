@@ -64,5 +64,16 @@ public interface TStudentAttendanceMapper {
 	 * @return 更新結果
 	 */
 	Boolean update(TStudentAttendance tStudentAttendance);
+	
+	/**
+	 * 勤怠情報（受講生入力）未入力件数取得
+	 * 
+	 * @author 李宏博  – Task.25
+	 * @param lmsUserId
+	 * @param deleteFlg
+	 * @param trainingDate
+	 * @return 件数
+	 */
+	Integer notEnterCount(Integer lmsUserId,Integer deleteFlg,String trainingDate);
 
 }

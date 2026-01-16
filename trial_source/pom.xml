@@ -118,6 +118,11 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>jp.co.sss.shop</groupId>
+			<artifactId>shop_lesson</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
