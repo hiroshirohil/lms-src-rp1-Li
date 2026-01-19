@@ -133,6 +133,40 @@ public class AttendanceUtil {
 	}
 
 	/**
+	 * 時間取得（時）
+	 * 
+	 * @author 李宏博  – Task.26
+	 * @return 時
+	 */
+	public LinkedHashMap<Integer, String> setHourTime() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		map.put(null, "");
+		for (int i = 0; i < 25; i++) {
+			String time;
+			time = i < 10 ? "0" + i : Integer.toString(i);
+			map.put(i, time);
+		}
+		return map;
+	}
+
+	/**
+	 * 時間取得（分）
+	 * 
+	 * @author 李宏博  – Task.26
+	 * @return 分
+	 */
+	public LinkedHashMap<Integer, String> setMinuteTime() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		map.put(null, "");
+		for (int i = 0; i < 60; i++) {
+			String time;
+			time = i < 10 ? "0" + i : Integer.toString(i);
+			map.put(i, time);
+		}
+		return map;
+	}
+	
+	/**
 	 * 研修日の判定
 	 * 
 	 * @param courseId
