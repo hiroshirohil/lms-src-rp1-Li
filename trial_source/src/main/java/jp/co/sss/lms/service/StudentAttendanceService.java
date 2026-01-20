@@ -324,12 +324,12 @@ public class StudentAttendanceService {
 			tStudentAttendance.setAccountId(loginUserDto.getAccountId());
 			// 出勤時刻整形 @author 李宏博  – Task.26
 			TrainingTime trainingStartTime = null;
-			trainingStartTime = new TrainingTime(dailyAttendanceForm.getTrainingStartHourTime() + ":"
+			trainingStartTime = new TrainingTime(dailyAttendanceForm.getTrainingStartHourTime()
 					+ dailyAttendanceForm.getTrainingStartMinuteTime());
 			tStudentAttendance.setTrainingStartTime(trainingStartTime.getFormattedString());
 			// 退勤時刻整形 @author 李宏博  – Task.26
 			TrainingTime trainingEndTime = null;
-			trainingEndTime = new TrainingTime(dailyAttendanceForm.getTrainingEndHourTime() + ":"
+			trainingEndTime = new TrainingTime(dailyAttendanceForm.getTrainingEndHourTime()
 					+ dailyAttendanceForm.getTrainingEndMinuteTime());
 			tStudentAttendance.setTrainingEndTime(
 					trainingEndTime.getFormattedString());

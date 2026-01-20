@@ -29,8 +29,8 @@
 						<tr>
 							<th class="w140">日付</th>
 							<th class="w300">コース内容</th>
-							<th class="w70">出勤</th>
-							<th class="w70">退勤</th>
+							<th class="w200">出勤</th>
+							<th class="w200">退勤</th>
 							<th class="w80">中抜け時間</th>
 							<th class="w70">ステータス</th>
 							<th class="w240">備考</th>
@@ -57,8 +57,6 @@
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
 								<td class="w70">
-									<!--<input type="text" th:name="|attendanceList[${stat.index}].trainingStartTime|"
-										th:value="${dailyAttendanceForm.trainingStartTime}" class="form-control" />-->
 									<select th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
 										class="form-control">
 										<option
@@ -67,7 +65,11 @@
 											th:selected="${trainingStartHourTime.value == dailyAttendanceForm.trainingStartHourTime}">
 											[[${trainingStartHourTime.value}]]</option>
 									</select>
+								</td>
+								<td>
 									:
+								</td>
+								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartMinuteTime|"
 										class="form-control">
 										<option
@@ -79,8 +81,6 @@
 									</select>
 								</td>
 								<td class="w70">
-									<!--<input type="text" th:name="|attendanceList[${stat.index}].trainingEndTime|"
-										th:value="${dailyAttendanceForm.trainingEndTime}" class="form-control" />-->
 									<select th:name="|attendanceList[${stat.index}].trainingEndHourTime|"
 										class="form-control">
 										<option
@@ -89,7 +89,11 @@
 											th:selected="${trainingEndHourTime.value == dailyAttendanceForm.trainingEndHourTime}">
 											[[${trainingEndHourTime.value}]]</option>
 									</select>
+								</td>
+								<td>
 									:
+								</td>
+								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingEndMinuteTime|"
 										class="form-control">
 										<option
