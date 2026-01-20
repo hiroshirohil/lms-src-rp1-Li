@@ -12,6 +12,9 @@
 		<h2>勤怠管理</h2>
 	</th:block>
 
+	<!-- 李宏博 – Task.26：エラー表示エリア -->
+
+
 	<th:block th:if="${session.loginUserDto.role != '0001'}">
 		<h2>勤怠管理 <small>( [[${attendanceForm.userName}]] )</small></h2>
 		<th:block th:if="${session.loginUserDto.leaveFlg == '1'}">
@@ -22,7 +25,7 @@
 	<div class="row">
 		<div class="bs-component col-sm-12">
 
-			<form th:action="@{/attendance/update}" method="post">
+			<form id="updateForm" th:action="@{/attendance/update}" method="post" onsubmit="updateDialog()">
 				<table class="table table-hover dataTable no-footer">
 					<!-- 李宏博 – Task.29 -->
 					<thead id="head">
@@ -56,12 +59,14 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
+								<!-- 李宏博 – Task.26　開始-->
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
 										class="form-control">
 										<option
 											th:each="trainingStartHourTime : ${attendanceForm.trainingStartHourTime}"
-											th:value="${trainingStartHourTime.value}" th:inlne="text" class="form-control"
+											th:value="${trainingStartHourTime.value}" th:inlne="text"
+											class="form-control"
 											th:selected="${trainingStartHourTime.value == dailyAttendanceForm.trainingStartHourTime}">
 											[[${trainingStartHourTime.value}]]</option>
 									</select>
@@ -83,8 +88,7 @@
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingEndHourTime|"
 										class="form-control">
-										<option
-											th:each="trainingEndHourTime : ${attendanceForm.trainingEndHourTime}"
+										<option th:each="trainingEndHourTime : ${attendanceForm.trainingEndHourTime}"
 											th:value="${trainingEndHourTime.value}" th:inlne="text" class="form-control"
 											th:selected="${trainingEndHourTime.value == dailyAttendanceForm.trainingEndHourTime}">
 											[[${trainingEndHourTime.value}]]</option>
@@ -104,6 +108,7 @@
 											[[${trainingEndMinuteTime.value}]]</option>
 									</select>
 								</td>
+								<!-- 李宏博 – Task.26　終了-->
 								<td class="w80">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}"
@@ -143,6 +148,11 @@
 		box.style.overflowY = "auto";
 		const head = document.getElementById("head");
 		head.style.display = "block";
+		//李宏博 – Task.26：ダイアログ付属メソッド
+		function updateDialog() {
+			const updateResult = confirm("更新します。よろしいですか？");
+			return updateResult
+		}
 	</script>
 </body>
 

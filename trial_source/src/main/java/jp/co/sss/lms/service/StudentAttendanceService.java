@@ -11,6 +11,8 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
@@ -371,8 +373,6 @@ public class StudentAttendanceService {
 	 * 
 	 * @author 李宏博  – Task.25
 	 * @param lmsUserId
-	 * @param deleteFlg
-	 * @param trainingDate
 	 * @return 件数
 	 */
 
@@ -382,5 +382,96 @@ public class StudentAttendanceService {
 		Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 		String nowDate = sdf.format(date);
 		return (tStudentAttendanceMapper.notEnterCount(lmsUserId, 0, nowDate) > 0) ? true : false;
+	}
+
+	/**
+	 * 勤怠情報変更入力チェック
+	 * 
+	 * @author 李宏博  – Task.27
+	 * @param attendanceForm
+	 */
+	public void attendanceInputCheck(AttendanceForm attendanceForm, BindingResult result) {
+		// フォーム入力チェックでエラーがある場合はチェックを行わない
+		if (result.hasErrors()) {
+			return;
+		}
+		//カウンター用
+		int n = 0;
+		// 入力パラメータ．勤怠リスト[n]の件数分、下記チェックを行う
+		for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {
+			//入力パラメータ．勤怠リスト[n]．備考の文字数　＞　100　の場合
+			if (dailyAttendanceForm.getNote().length() > 100) {
+				result.addError(new FieldError(result.getObjectName(), "note", messageUtil
+						.getMessage("maxlength", new String[] { "備考", "100" })));
+			}
+			// 入力パラメータ．勤怠リスト[n]．出勤時間（時）、出勤時間（分）の一方が入力有り　＆　もう一方が入力なしの場合
+			if ((dailyAttendanceForm.getTrainingStartHourTime() != null
+					&& !dailyAttendanceForm.getTrainingStartHourTime().equals("") &&
+					(dailyAttendanceForm.getTrainingStartMinuteTime() == null
+							|| dailyAttendanceForm.getTrainingStartMinuteTime().equals("")))
+					|| (dailyAttendanceForm.getTrainingStartMinuteTime() != null
+							&& !dailyAttendanceForm.getTrainingStartMinuteTime().equals("") &&
+							(dailyAttendanceForm.getTrainingStartHourTime() == null
+									|| dailyAttendanceForm.getTrainingStartHourTime().equals("")))) {
+				result.addError(new FieldError(result.getObjectName(), "trainingStartTime", messageUtil
+						.getMessage("input.invalid", new String[] { "出勤時間" })));
+			}
+			// 入力パラメータ．勤怠リスト[n]．退勤時間（時）、退勤時間（分）の一方が入力有り　＆　もう一方が入力なしの場合
+			if ((dailyAttendanceForm.getTrainingEndHourTime() != null
+					&& !dailyAttendanceForm.getTrainingEndHourTime().equals("") &&
+					(dailyAttendanceForm.getTrainingEndMinuteTime() == null
+							|| dailyAttendanceForm.getTrainingEndMinuteTime().equals("")))
+					|| (dailyAttendanceForm.getTrainingEndMinuteTime() != null
+							&& !dailyAttendanceForm.getTrainingEndMinuteTime().equals("") &&
+							(dailyAttendanceForm.getTrainingEndHourTime() == null
+									|| dailyAttendanceForm.getTrainingEndHourTime().equals("")))) {
+				result.addError(new FieldError(result.getObjectName(), "trainingEndTime", messageUtil
+						.getMessage("input.invalid", new String[] { "退勤時間" })));
+			}
+			//入力パラメータ．勤怠リスト[n]．出勤時間に入力なし　＆　退勤時間に入力あり　の場合
+			if (((dailyAttendanceForm.getTrainingStartHourTime() == null
+					|| dailyAttendanceForm.getTrainingStartHourTime().equals("")) &&
+					(dailyAttendanceForm.getTrainingStartMinuteTime() == null
+							|| dailyAttendanceForm.getTrainingStartMinuteTime().equals("")))
+					&& ((dailyAttendanceForm.getTrainingEndHourTime() != null
+							&& !dailyAttendanceForm.getTrainingEndHourTime().equals("")) &&
+							(dailyAttendanceForm.getTrainingEndMinuteTime() != null
+									&& !dailyAttendanceForm.getTrainingEndMinuteTime().equals("")))) {
+				result.addError(new FieldError(result.getObjectName(), "trainingStartTime", messageUtil
+						.getMessage("attendance.punchInEmpty")));
+			}
+			//入力パラメータ．勤怠リスト[n]．出勤時間　＞　退勤時間　の場合、下記エラーメッセージを追加設定
+			if ((dailyAttendanceForm.getTrainingStartHourTime()
+					+ dailyAttendanceForm.getTrainingStartMinuteTime()).isEmpty()
+					|| (dailyAttendanceForm.getTrainingStartHourTime()
+							+ dailyAttendanceForm.getTrainingStartMinuteTime()) == null
+									? false
+									: Integer.valueOf((dailyAttendanceForm.getTrainingStartHourTime()
+											+ dailyAttendanceForm.getTrainingStartMinuteTime())) > Integer.valueOf(
+													(dailyAttendanceForm.getTrainingEndHourTime()
+															+ dailyAttendanceForm.getTrainingEndMinuteTime()))) {
+				result.addError(new FieldError(result.getObjectName(), "trainingStartTime", messageUtil
+						.getMessage("attendance.trainingTimeRange", new String[] { "n" })));
+			}
+			//入力パラメータ．勤怠リスト[n]．中抜け時間が勤務時間（出勤時間～退勤時間までの時間）を超える場合
+			if ((dailyAttendanceForm.getTrainingStartHourTime()
+					+ dailyAttendanceForm.getTrainingStartMinuteTime()).isEmpty()
+					|| (dailyAttendanceForm.getTrainingStartHourTime()
+							+ dailyAttendanceForm.getTrainingStartMinuteTime()) == null
+					|| dailyAttendanceForm
+							.getBlankTime() == null
+									? false
+									: Integer.valueOf(
+											(dailyAttendanceForm.getTrainingEndHourTime()
+													+ dailyAttendanceForm.getTrainingEndMinuteTime()))
+											- Integer.valueOf((dailyAttendanceForm.getTrainingStartHourTime()
+													+ dailyAttendanceForm
+															.getTrainingStartMinuteTime())) < dailyAttendanceForm
+																	.getBlankTime()) {
+				result.addError(new FieldError(result.getObjectName(), "blankTime", messageUtil
+						.getMessage("attendance.blankTimeError")));
+			}
+			n++;
+		}
 	}
 }
