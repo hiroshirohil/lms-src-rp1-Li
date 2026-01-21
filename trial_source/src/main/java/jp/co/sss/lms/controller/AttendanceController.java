@@ -137,7 +137,6 @@ public class AttendanceController {
 			throws ParseException {
 		studentAttendanceService.attendanceInputCheck(attendanceForm, result);
 		if (result.hasErrors()) {
-			model.addAttribute("attendanceForm", attendanceForm);
 			return "attendance/update";
 		}
 		// 更新

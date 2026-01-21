@@ -11,10 +11,6 @@
 	<th:block th:if="${session.loginUserDto.role == '0001'}">
 		<h2>勤怠管理</h2>
 	</th:block>
-
-	<!-- 李宏博 – Task.26：エラー表示エリア -->
-
-
 	<th:block th:if="${session.loginUserDto.role != '0001'}">
 		<h2>勤怠管理 <small>( [[${attendanceForm.userName}]] )</small></h2>
 		<th:block th:if="${session.loginUserDto.leaveFlg == '1'}">
@@ -22,20 +18,28 @@
 		</th:block>
 	</th:block>
 
+	<!-- 李宏博 – Task.26：エラー表示エリア -->
+	<form th:object="${attendanceForm}">
+		<div th:if="${#fields.hasGlobalErrors()}" class="error">
+			<ul>
+				<li th:each="err : ${#fields.globalErrors()}" th:text="${err.defaultMessage}"></li>
+			</ul>
+		</div>
+	</form>
 	<div class="row">
 		<div class="bs-component col-sm-12">
 
-			<form id="updateForm" th:action="@{/attendance/update}" method="post" onsubmit="updateDialog()">
+			<form id="updateForm" th:action="@{/attendance/update}" method="post" onsubmit="return updateDialog()">
 				<table class="table table-hover dataTable no-footer">
 					<!-- 李宏博 – Task.29 -->
 					<thead id="head">
 						<tr>
 							<th class="w140">日付</th>
-							<th class="w300">コース内容</th>
-							<th class="w200">出勤</th>
-							<th class="w200">退勤</th>
-							<th class="w80">中抜け時間</th>
-							<th class="w70">ステータス</th>
+							<th class="w260">コース内容</th>
+							<th class="w180">出勤</th>
+							<th class="w180">退勤</th>
+							<th class="w90">中抜け時間</th>
+							<th class="w90">ステータス</th>
 							<th class="w240">備考</th>
 						</tr>
 					</thead>
@@ -58,7 +62,7 @@
 										th:value="${dailyAttendanceForm.statusDispName}" />
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
-								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
+								<td class="w260">[[${dailyAttendanceForm.sectionName}]]</td>
 								<!-- 李宏博 – Task.26　開始-->
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
@@ -109,7 +113,7 @@
 									</select>
 								</td>
 								<!-- 李宏博 – Task.26　終了-->
-								<td class="w80">
+								<td class="w120">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}"
 											th:value="${blankTime.key}" th:inlne="text" class="form-control"
@@ -117,7 +121,7 @@
 											[[${blankTime.value}]]</option>
 									</select>
 								</td>
-								<td class="w70">[[${dailyAttendanceForm.statusDispName}]]</td>
+								<td class="w90">[[${dailyAttendanceForm.statusDispName}]]</td>
 								<td class="w240">
 									<input type="text" th:name="|attendanceList[${stat.index}].note|"
 										th:value="${dailyAttendanceForm.note}" class="form-control"></input>
