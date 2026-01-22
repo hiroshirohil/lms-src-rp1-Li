@@ -18,18 +18,19 @@
 		</th:block>
 	</th:block>
 
-	<!-- 李宏博 – Task.26：エラー表示エリア -->
-	<form th:object="${attendanceForm}">
-		<div th:if="${#fields.hasGlobalErrors()}" class="error">
-			<ul>
-				<li th:each="err : ${#fields.globalErrors()}" th:text="${err.defaultMessage}"></li>
-			</ul>
-		</div>
-	</form>
 	<div class="row">
 		<div class="bs-component col-sm-12">
 
-			<form id="updateForm" th:action="@{/attendance/update}" method="post" onsubmit="return updateDialog()">
+			<form id="updateForm" th:action="@{/attendance/update}" method="post" onsubmit="return updateDialog()"
+				th:object="${attendanceForm}">
+
+				<!-- 李宏博 – Task.27：エラー表示エリア -->
+				<div th:if="${#fields.hasErrors()}" class="error">
+					<ul>
+						<li th:each="err : ${#fields.errors()}" th:text="${err}"> </li>
+					</ul>
+				</div>
+
 				<table class="table table-hover dataTable no-footer">
 					<!-- 李宏博 – Task.29 -->
 					<thead id="head">
@@ -45,7 +46,7 @@
 					</thead>
 					<!-- 李宏博 – Task.29 -->
 					<tbody id="scrollBox">
-						<th:block th:each="dailyAttendanceForm, stat : *{attendanceForm.attendanceList}">
+						<th:block th:each="dailyAttendanceForm, stat : *{attendanceList}">
 							<tr>
 								<th:block>
 									<input type="hidden" th:name="|attendanceList[${stat.index}].isToday|"
@@ -69,7 +70,7 @@
 										class="form-control">
 										<option
 											th:each="trainingStartHourTime : ${attendanceForm.trainingStartHourTime}"
-											th:value="${trainingStartHourTime.value}" th:inlne="text"
+											th:value="${trainingStartHourTime.value}" th:inline="text"
 											class="form-control"
 											th:selected="${trainingStartHourTime.value == dailyAttendanceForm.trainingStartHourTime}">
 											[[${trainingStartHourTime.value}]]</option>
@@ -83,7 +84,7 @@
 										class="form-control">
 										<option
 											th:each="trainingStartMinuteTime : ${attendanceForm.trainingStartMinuteTime}"
-											th:value="${trainingStartMinuteTime.value}" th:inlne="text"
+											th:value="${trainingStartMinuteTime.value}" th:inline="text"
 											class="form-control"
 											th:selected="${trainingStartMinuteTime.value == dailyAttendanceForm.trainingStartMinuteTime}">
 											[[${trainingStartMinuteTime.value}]]</option>
@@ -93,7 +94,8 @@
 									<select th:name="|attendanceList[${stat.index}].trainingEndHourTime|"
 										class="form-control">
 										<option th:each="trainingEndHourTime : ${attendanceForm.trainingEndHourTime}"
-											th:value="${trainingEndHourTime.value}" th:inlne="text" class="form-control"
+											th:value="${trainingEndHourTime.value}" th:inline="text"
+											class="form-control"
 											th:selected="${trainingEndHourTime.value == dailyAttendanceForm.trainingEndHourTime}">
 											[[${trainingEndHourTime.value}]]</option>
 									</select>
@@ -106,7 +108,7 @@
 										class="form-control">
 										<option
 											th:each="trainingEndMinuteTime : ${attendanceForm.trainingEndMinuteTime}"
-											th:value="${trainingEndMinuteTime.value}" th:inlne="text"
+											th:value="${trainingEndMinuteTime.value}" th:inline="text"
 											class="form-control"
 											th:selected="${trainingEndMinuteTime.value == dailyAttendanceForm.trainingEndMinuteTime}">
 											[[${trainingEndMinuteTime.value}]]</option>
@@ -116,7 +118,7 @@
 								<td class="w120">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}"
-											th:value="${blankTime.key}" th:inlne="text" class="form-control"
+											th:value="${blankTime.key}" th:inline="text" class="form-control"
 											th:selected="${blankTime.key == dailyAttendanceForm.blankTime}">
 											[[${blankTime.value}]]</option>
 									</select>
