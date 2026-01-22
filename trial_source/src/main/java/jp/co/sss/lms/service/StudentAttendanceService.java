@@ -381,7 +381,7 @@ public class StudentAttendanceService {
 		LocalDateTime now = LocalDateTime.now();
 		Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 		String nowDate = sdf.format(date);
-		return (tStudentAttendanceMapper.notEnterCount(lmsUserId, 0, nowDate) > 0) ? true : false;
+		return (tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, nowDate) > 0) ? true : false;
 	}
 
 	/**

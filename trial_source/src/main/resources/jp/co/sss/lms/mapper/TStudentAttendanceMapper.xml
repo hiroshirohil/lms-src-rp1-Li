@@ -88,29 +88,27 @@
 
 	<!-- 現在日付より前日付で勤怠未入力数を取得 -->
 	<select id="notEnterCount" resultType="Integer">
-		<![CDATA[
 		SELECT
-			COUNT(*)
-		FROM
-			t_student_attendance
-		WHERE
-			lms_user_id = #{lmsUserId}
-		AND
-			delete_flg = #{deleteFlg}
-		AND
-			training_date < #{trainingDate}::timestamp
-		AND
-			status != 1
-		AND
-			(
-			training_start_time = ''
-		OR
-			training_end_time = ''
-		OR
-			training_start_time IS NULL
-		OR
-			training_end_time IS NULL
-			)
-		]]>
+        	COUNT(*)
+    	FROM
+        	t_student_attendance
+    	WHERE
+        	lms_user_id = #{lmsUserId}
+    	AND
+        	delete_flg = #{deleteFlg}
+    	AND
+        	training_date &lt; #{trainingDate} ::timestamp without time zone
+    	AND
+        	status != 1
+    	AND
+        (
+        	training_start_time = ''
+    	OR
+        	training_end_time = ''
+    	OR
+        	training_start_time IS NULL
+    	OR
+        	training_end_time IS NULL
+        )
 	</select>
 </mapper>
