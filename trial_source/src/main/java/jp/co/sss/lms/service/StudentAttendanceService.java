@@ -12,7 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
@@ -421,34 +421,68 @@ public class StudentAttendanceService {
 			boolean isEndHourEmpty = endHour == null || endHour.isEmpty();
 			boolean isEndMinuteEmpty = endMinute == null || endMinute.isEmpty();
 
+			 int index = attendanceForm.getAttendanceList().indexOf(dailyAttendanceForm);
+			
 			//入力パラメータ．勤怠リスト[n]．備考の文字数　＞　100　の場合
 			if (dailyAttendanceForm.getNote().length() > 100) {
-				result.addError(new ObjectError(
+				result.addError(new FieldError(
 						result.getObjectName(),
+						"attendanceList["+index+"].note",
+						dailyAttendanceForm.getNote(),
+						false,
 						new String[] { "maxlength" },
 						new Object[] { "備考", "100" },
 						messageUtil.getMessage("maxlength", new String[] { "備考", "100" })));
 			}
 			// 入力パラメータ．勤怠リスト[n]．出勤時間（時）、出勤時間（分）の一方が入力有り　＆　もう一方が入力なしの場合
-			if ((isStartHourEmpty && !isStartMinuteEmpty) || (!isStartHourEmpty && isStartMinuteEmpty)) {
-				result.addError(new ObjectError(
+			if (isStartHourEmpty && !isStartMinuteEmpty) {
+				result.addError(new FieldError(
 						result.getObjectName(),
+						"attendanceList["+index+"].trainingStartHourTime",
+						dailyAttendanceForm.getTrainingStartHourTime(),
+						false,
+						new String[] { "input.invalid" },
+						new Object[] { "出勤時間" },
+						messageUtil.getMessage("input.invalid", new String[] { "出勤時間" })));
+			}
+			if (!isStartHourEmpty && isStartMinuteEmpty) {
+				result.addError(new FieldError(
+						result.getObjectName(),
+						"attendanceList["+index+"].trainingStartMinuteTime",
+						dailyAttendanceForm.getTrainingStartMinuteTime(),
+						false,
 						new String[] { "input.invalid" },
 						new Object[] { "出勤時間" },
 						messageUtil.getMessage("input.invalid", new String[] { "出勤時間" })));
 			}
 			// 入力パラメータ．勤怠リスト[n]．退勤時間（時）、退勤時間（分）の一方が入力有り　＆　もう一方が入力なしの場合
-			if ((isEndHourEmpty && !isEndMinuteEmpty) || (!isEndHourEmpty && isEndMinuteEmpty)) {
-				result.addError(new ObjectError(
+			if (isEndHourEmpty && !isEndMinuteEmpty) {
+				result.addError(new FieldError(
 						result.getObjectName(),
+						"attendanceList["+index+"].trainingEndHourTime",
+						dailyAttendanceForm.getTrainingEndHourTime(),
+						false,
+						new String[] { "input.invalid" },
+						new Object[] { "退勤時間" },
+						messageUtil.getMessage("input.invalid", new String[] { "退勤時間" })));
+			}
+			if (!isEndHourEmpty && isEndMinuteEmpty) {
+				result.addError(new FieldError(
+						result.getObjectName(),
+						"attendanceList["+index+"].trainingEndMinuteTime",
+						dailyAttendanceForm.getTrainingEndMinuteTime(),
+						false,
 						new String[] { "input.invalid" },
 						new Object[] { "退勤時間" },
 						messageUtil.getMessage("input.invalid", new String[] { "退勤時間" })));
 			}
 			//入力パラメータ．勤怠リスト[n]．出勤時間に入力なし　＆　退勤時間に入力あり　の場合
 			if ((isStartHourEmpty && isStartMinuteEmpty) && !(isEndHourEmpty && isEndMinuteEmpty)) {
-				result.addError(new ObjectError(
+				result.addError(new FieldError(
 						result.getObjectName(),
+						"attendanceList["+index+"].trainingStartHourTime",
+						dailyAttendanceForm.getTrainingStartHourTime(),
+						false,
 						new String[] { "attendance.punchInEmpty" },
 						new Object[] {},
 						messageUtil.getMessage("attendance.punchInEmpty")));
@@ -456,8 +490,11 @@ public class StudentAttendanceService {
 			//入力パラメータ．勤怠リスト[n]．出勤時間　＞　退勤時間　の場合、下記エラーメッセージを追加設定
 			if (isStartHourEmpty || isStartMinuteEmpty || isEndHourEmpty || isEndMinuteEmpty ? false
 					: Integer.valueOf(startHour + startMinute) > Integer.valueOf(endHour + endMinute)) {
-				result.addError(new ObjectError(
+				result.addError(new FieldError(
 						result.getObjectName(),
+						"attendanceList["+index+"].trainingStartHourTime",
+						dailyAttendanceForm.getTrainingStartHourTime(),
+						false,
 						new String[] { "attendance.trainingTimeRange" },
 						new Object[] { "[" + startHour + ":" + startMinute + "]",
 								"[" + endHour + ":" + endMinute + "]" },
@@ -469,8 +506,11 @@ public class StudentAttendanceService {
 			if (isStartHourEmpty || isStartMinuteEmpty || isEndHourEmpty || isEndMinuteEmpty || blankTime == null
 					? false
 					: Integer.valueOf(endHour + endMinute) - Integer.valueOf(startHour + startMinute) < blankTime) {
-				result.addError(new ObjectError(
+				result.addError(new FieldError(
 						result.getObjectName(),
+						"attendanceList["+index+"].blankTime",
+						dailyAttendanceForm.getBlankTime(),
+						false,
 						new String[] { "attendance.blankTimeError" },
 						new Object[] {},
 						messageUtil.getMessage("attendance.blankTimeError")));

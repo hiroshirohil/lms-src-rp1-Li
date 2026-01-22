@@ -25,9 +25,9 @@
 				th:object="${attendanceForm}">
 
 				<!-- 李宏博 – Task.27：エラー表示エリア -->
-				<div th:if="${#fields.hasErrors()}" class="error">
+				<div th:if="${#fields.hasErrors('*')}" class="help-inline error">
 					<ul>
-						<li th:each="err : ${#fields.errors()}" th:text="${err}"> </li>
+						<li th:each="err : ${#fields.allErrors()}" th:text="${err}"> </li>
 					</ul>
 				</div>
 
@@ -67,6 +67,7 @@
 								<!-- 李宏博 – Task.26　開始-->
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
+										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingStartHourTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option
 											th:each="trainingStartHourTime : ${attendanceForm.trainingStartHourTime}"
@@ -81,6 +82,7 @@
 								</td>
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartMinuteTime|"
+										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingStartMinuteTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option
 											th:each="trainingStartMinuteTime : ${attendanceForm.trainingStartMinuteTime}"
@@ -92,6 +94,7 @@
 								</td>
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingEndHourTime|"
+										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingEndHourTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option th:each="trainingEndHourTime : ${attendanceForm.trainingEndHourTime}"
 											th:value="${trainingEndHourTime.value}" th:inline="text"
@@ -105,6 +108,7 @@
 								</td>
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingEndMinuteTime|"
+										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingEndMinuteTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option
 											th:each="trainingEndMinuteTime : ${attendanceForm.trainingEndMinuteTime}"
@@ -116,7 +120,9 @@
 								</td>
 								<!-- 李宏博 – Task.26　終了-->
 								<td class="w120">
-									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
+									<select th:name="|attendanceList[${stat.index}].blankTime|"
+										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].blankTime')} ? 'border-color:#b94a48' : ''"
+										class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}"
 											th:value="${blankTime.key}" th:inline="text" class="form-control"
 											th:selected="${blankTime.key == dailyAttendanceForm.blankTime}">
