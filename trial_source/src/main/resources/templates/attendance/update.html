@@ -132,6 +132,7 @@
 								<td class="w90">[[${dailyAttendanceForm.statusDispName}]]</td>
 								<td class="w240">
 									<input type="text" th:name="|attendanceList[${stat.index}].note|"
+										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].note')} ? 'border-color:#b94a48' : ''"
 										th:value="${dailyAttendanceForm.note}" class="form-control"></input>
 								</td>
 							</tr>

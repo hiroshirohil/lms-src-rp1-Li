@@ -88,6 +88,7 @@
 			const minutes = ('0' + today.getMinutes()).slice(-2);
 			return hours + ':' + minutes;
 		};
+		//ダイアログ表示メソッド
 		 let notEnterCheckResult = document.getElementById("result").textContent;
     	if (notEnterCheckResult === 'true') {
         	alert("過去日の勤怠に未入力があります。");

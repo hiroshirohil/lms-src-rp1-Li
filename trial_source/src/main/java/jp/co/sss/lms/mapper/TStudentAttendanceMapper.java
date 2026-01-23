@@ -71,9 +71,9 @@ public interface TStudentAttendanceMapper {
 	 * @author 李宏博  – Task.25
 	 * @param lmsUserId
 	 * @param deleteFlg
-	 * @param trainingDate
+	 * @param nowDate
 	 * @return 件数
 	 */
-	Integer notEnterCount(Integer lmsUserId,short deleteFlg,String trainingDate);
+	Integer notEnterCount(Integer lmsUserId,short deleteFlg,Date trainingDate);
 
 }

@@ -2,8 +2,6 @@ package jp.co.sss.lms.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -377,10 +375,8 @@ public class StudentAttendanceService {
 	 */
 
 	public Boolean notEnterCheck(Integer lmsUserId) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-		Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-		String nowDate = sdf.format(date);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		Date nowDate = sdf.parse(sdf.format(attendanceUtil.getTrainingDate()));
 		return (tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, nowDate) > 0) ? true : false;
 	}
 

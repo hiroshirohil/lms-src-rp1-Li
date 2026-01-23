@@ -97,7 +97,7 @@
     	AND
         	delete_flg = #{deleteFlg}
     	AND
-        	training_date &lt; #{trainingDate} ::timestamp without time zone
+        	training_date &lt; #{trainingDate}
     	AND
         	status != 1
     	AND
