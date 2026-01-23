@@ -37,6 +37,7 @@
 						<tr>
 							<th class="w140">日付</th>
 							<th class="w260">コース内容</th>
+							<th class="w90"></th>
 							<th class="w180">出勤</th>
 							<th class="w180">退勤</th>
 							<th class="w90">中抜け時間</th>
@@ -64,6 +65,10 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w260">[[${dailyAttendanceForm.sectionName}]]</td>
+								<!-- 李宏博 – Task.28　開始-->
+								<td class="w90">
+									<button name="setTime" onclick="setTime()" class="btn btn-success default-button">定時</button>
+								</td>
 								<!-- 李宏博 – Task.26　開始-->
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
@@ -165,6 +170,14 @@
 		function updateDialog() {
 			const updateResult = confirm("更新します。よろしいですか？");
 			return updateResult
+		}
+		//李宏博 – Task.28：定時ボタン付属メソッド
+		function setTime(){
+			const startHour = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
+			const startMinute = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
+			const EndHour = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
+			const EndMinute = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
+			
 		}
 	</script>
 </body>
