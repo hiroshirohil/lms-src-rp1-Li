@@ -386,7 +386,7 @@ public class StudentAttendanceService {
 	 * @author 李宏博  – Task.27
 	 * @param attendanceForm
 	 */
-	public void attendanceInputCheck(AttendanceForm attendanceForm, BindingResult result) {
+	public void updateInputCheck(AttendanceForm attendanceForm, BindingResult result) {
 
 		/**
 		 * エラーメッセージが設定されていた場合、下記内容を設定し勤怠情報直接変更画面へ遷移
