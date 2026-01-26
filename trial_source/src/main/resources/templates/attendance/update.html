@@ -8,6 +8,8 @@
 
 <body>
 
+	<span id="attendanceTimeForm" th:text="${attendanceForm}" hidden></span>
+
 	<th:block th:if="${session.loginUserDto.role == '0001'}">
 		<h2>勤怠管理</h2>
 	</th:block>
@@ -36,8 +38,8 @@
 					<thead id="head">
 						<tr>
 							<th class="w140">日付</th>
-							<th class="w260">コース内容</th>
-							<th class="w90"></th>
+							<th class="w140">コース内容</th>
+							<th class="w70"></th>
 							<th class="w180">出勤</th>
 							<th class="w180">退勤</th>
 							<th class="w90">中抜け時間</th>
@@ -64,14 +66,16 @@
 										th:value="${dailyAttendanceForm.statusDispName}" />
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
-								<td class="w260">[[${dailyAttendanceForm.sectionName}]]</td>
+								<td class="w140">[[${dailyAttendanceForm.sectionName}]]</td>
 								<!-- 李宏博 – Task.28　開始-->
-								<td class="w90">
-									<button name="setTime" onclick="setTime()" class="btn btn-success default-button">定時</button>
+								<td class="w70">
+									<button type="button" th:onclick="'setTime(' + ${stat.index} + ')'"
+										class="btn btn-success default-button">定時</button>
 								</td>
 								<!-- 李宏博 – Task.26　開始-->
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
+									<select th:id="|startHour_${stat.index}|"
+										th:name="|attendanceList[${stat.index}].trainingStartHourTime|"
 										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingStartHourTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option
@@ -86,7 +90,8 @@
 									:
 								</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingStartMinuteTime|"
+									<select th:id="|startMinute_${stat.index}|"
+										th:name="|attendanceList[${stat.index}].trainingStartMinuteTime|"
 										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingStartMinuteTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option
@@ -98,7 +103,8 @@
 									</select>
 								</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingEndHourTime|"
+									<select th:id="|endHour_${stat.index}|"
+										th:name="|attendanceList[${stat.index}].trainingEndHourTime|"
 										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingEndHourTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option th:each="trainingEndHourTime : ${attendanceForm.trainingEndHourTime}"
@@ -112,7 +118,8 @@
 									:
 								</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingEndMinuteTime|"
+									<select th:id="|endMinute_${stat.index}|"
+										th:name="|attendanceList[${stat.index}].trainingEndMinuteTime|"
 										th:style="${#fields.hasErrors('attendanceList[__${stat.index}__].trainingEndMinuteTime')} ? 'border-color:#b94a48' : ''"
 										class="form-control">
 										<option
@@ -159,7 +166,7 @@
 		</div>
 	</div>
 	<!-- 李宏博 – Task.29 -->
-	<script>
+	<script th:inline="javascript">
 		const box = document.getElementById("scrollBox");
 		box.style.display = "block";
 		box.style.height = "600px";
@@ -172,12 +179,17 @@
 			return updateResult
 		}
 		//李宏博 – Task.28：定時ボタン付属メソッド
-		function setTime(){
-			const startHour = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
-			const startMinute = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
-			const EndHour = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
-			const EndMinute = document.getElementByName("|attendanceList[${stat.index}].trainingStartHourTime|");
-			
+
+		function setTime(index) {
+			const startHour = document.getElementById("startHour_" + index);
+			const startMinute = document.getElementById("startMinute_" + index);
+			const endHour = document.getElementById("endHour_" + index);
+			const endMinute = document.getElementById("endMinute_" + index);
+
+			if (startHour) startHour.value =  /*[[${attendanceForm.trainingStartHourTime[9]}]]*/ '';
+			if (startMinute) startMinute.value = /*[[${attendanceForm.trainingStartMinuteTime[0]}]]*/ '';
+			if (endHour) endHour.value = /*[[${attendanceForm.trainingEndHourTime[18]}]]*/ '';
+			if (endMinute) endMinute.value = /*[[${attendanceForm.trainingEndMinuteTime[0]}]]*/ '';
 		}
 	</script>
 </body>
