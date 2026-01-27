@@ -223,10 +223,10 @@ public class StudentAttendanceService {
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
 		//@author 李宏博  – Task.26
-		attendanceForm.setTrainingStartHourTime(attendanceUtil.setHourTime());
-		attendanceForm.setTrainingStartMinuteTime(attendanceUtil.setMinuteTime());
-		attendanceForm.setTrainingEndHourTime(attendanceUtil.setHourTime());
-		attendanceForm.setTrainingEndMinuteTime(attendanceUtil.setMinuteTime());
+		attendanceForm.setTrainingStartHourTime(attendanceUtil.getHourMap());
+		attendanceForm.setTrainingStartMinuteTime(attendanceUtil.getMinuteMap());
+		attendanceForm.setTrainingEndHourTime(attendanceUtil.getHourMap());
+		attendanceForm.setTrainingEndMinuteTime(attendanceUtil.getMinuteMap());
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -398,10 +398,10 @@ public class StudentAttendanceService {
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
-		attendanceForm.setTrainingStartHourTime(attendanceUtil.setHourTime());
-		attendanceForm.setTrainingStartMinuteTime(attendanceUtil.setMinuteTime());
-		attendanceForm.setTrainingEndHourTime(attendanceUtil.setHourTime());
-		attendanceForm.setTrainingEndMinuteTime(attendanceUtil.setMinuteTime());
+		attendanceForm.setTrainingStartHourTime(attendanceUtil.getHourMap());
+		attendanceForm.setTrainingStartMinuteTime(attendanceUtil.getMinuteMap());
+		attendanceForm.setTrainingEndHourTime(attendanceUtil.getHourMap());
+		attendanceForm.setTrainingEndMinuteTime(attendanceUtil.getMinuteMap());
 		
 		// 入力パラメータ．勤怠リスト[n]の件数分、下記チェックを行う
 		for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {

@@ -8,8 +8,6 @@
 
 <body>
 
-	<span id="attendanceTimeForm" th:text="${attendanceForm}" hidden></span>
-
 	<th:block th:if="${session.loginUserDto.role == '0001'}">
 		<h2>勤怠管理</h2>
 	</th:block>
