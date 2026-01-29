@@ -222,6 +222,7 @@ public class StudentAttendanceService {
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+		
 		//@author 李宏博  – Task.26
 		attendanceForm.setTrainingStartHourTime(attendanceUtil.getHourMap());
 		attendanceForm.setTrainingStartMinuteTime(attendanceUtil.getMinuteMap());
